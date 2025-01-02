@@ -14,7 +14,7 @@ import torchvision
 from transformers import AutoModelForCausalLM
 
 from dataset.utils import get_dataloader
-from models import AlexNet, CNN, MLP, WideResNet
+from models import AlexNet, CNN, MLP, WideResNet, ResNet18
 from trainers.default_trainer import train, inference
 from trainers.fast_train import (
     load_cifar10_data,
@@ -31,6 +31,7 @@ INPUT_OUTPUT_SHAPE = {
     "cifar100": [3, 100],
     "purchase100": [600, 100],
     "texas100": [6169, 100],
+    "pathmnist": [3, 9]
 }
 
 
@@ -64,6 +65,8 @@ def get_model(model_type: str, dataset_name: str):
         return MLP(in_shape=in_shape, num_classes=num_classes)
     elif model_type == "vgg16":
         return torchvision.models.vgg16(pretrained=False)
+    elif model_type == 'resnet18':
+        return ResNet18(in_channels=in_shape, num_classes=num_classes)
     else:
         raise NotImplementedError(f"{model_type} is not implemented")
 

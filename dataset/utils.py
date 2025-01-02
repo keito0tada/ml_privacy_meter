@@ -9,6 +9,7 @@ from typing import List, Tuple, Any
 import numpy as np
 import pandas as pd
 import torch
+import torch.utils
 import torchvision
 import torchvision.transforms as transforms
 from torch.utils.data import Dataset, DataLoader
@@ -17,6 +18,8 @@ from transformers import AutoTokenizer
 from dataset import TabularDataset, TextDataset, load_agnews
 from trainers.fast_train import get_batches, load_cifar10_data
 
+import medmnist
+from medmnist import INFO, Evaluator
 
 class InfinitelyIndexableDataset(Dataset):
     """
@@ -209,6 +212,27 @@ def get_dataset(dataset_name: str, data_dir: str, logger: Any, **kwargs: Any) ->
                     ),
                 )
             all_data = TextDataset(agnews, target_column="labels", text_column="text")
+            with open(f"{path}.pkl", "wb") as file:
+                pickle.dump(all_data, file)
+            logger.info(f"Save data to {path}.pkl")
+        elif dataset_name == 'pathmnist':
+            info = INFO[dataset_name]
+            DataClass = getattr(medmnist, info['python_class'])
+            data_transform = transforms.Compose(
+            [transforms.ToTensor(),
+            transforms.Normalize(mean=[.5], std=[.5])])
+            train_dataset = DataClass(split='train', transform=data_transform, download=True, as_rgb=False, size=28)
+            # val_dataset = DataClass(split='val', transform=data_transform, download=True, as_rgb=False, size=28)
+            # test_dataset = DataClass(split='test', transform=data_transform, download=True, as_rgb=False, size=28)
+            train_data_x = []
+            train_data_y = []
+            for X, y in train_dataset:
+                train_data_x.append(X)
+                train_data_y.append(y[0])
+
+            all_data = torch.utils.data.TensorDataset(
+                torch.stack(train_data_x), torch.tensor(train_data_y, dtype=torch.int64)
+            )
             with open(f"{path}.pkl", "wb") as file:
                 pickle.dump(all_data, file)
             logger.info(f"Save data to {path}.pkl")
