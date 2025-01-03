@@ -32,6 +32,7 @@ INPUT_OUTPUT_SHAPE = {
     "purchase100": [600, 100],
     "texas100": [6169, 100],
     "pathmnist": [3, 9],
+    "tissuemnist": [1, 8],
 }
 
 
