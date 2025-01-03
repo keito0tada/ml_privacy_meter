@@ -216,12 +216,7 @@ def get_dataset(dataset_name: str, data_dir: str, logger: Any, **kwargs: Any) ->
             with open(f"{path}.pkl", "wb") as file:
                 pickle.dump(all_data, file)
             logger.info(f"Save data to {path}.pkl")
-<<<<<<< Updated upstream
-        elif dataset_name == "pathmnist":
-            print("load pathmnist")
-=======
         elif dataset_name == "pathmnist" or dataset_name == "tissuemnist":
->>>>>>> Stashed changes
             info = INFO[dataset_name]
             DataClass = getattr(medmnist, info["python_class"])
             data_transform = transforms.Compose(
@@ -234,13 +229,20 @@ def get_dataset(dataset_name: str, data_dir: str, logger: Any, **kwargs: Any) ->
                 as_rgb=False,
                 size=28,
             )
-<<<<<<< Updated upstream
-            # val_dataset = DataClass(split='val', transform=data_transform, download=True, as_rgb=False, size=28)
-            # test_dataset = DataClass(split='test', transform=data_transform, download=True, as_rgb=False, size=28)
-=======
-            val_dataset = DataClass(split='val', transform=data_transform, download=True, as_rgb=False, size=28)
-            test_dataset = DataClass(split='test', transform=data_transform, download=True, as_rgb=False, size=28)
->>>>>>> Stashed changes
+            val_dataset = DataClass(
+                split="val",
+                transform=data_transform,
+                download=True,
+                as_rgb=False,
+                size=28,
+            )
+            test_dataset = DataClass(
+                split="test",
+                transform=data_transform,
+                download=True,
+                as_rgb=False,
+                size=28,
+            )
             train_data_x = []
             train_data_y = []
             for X, y in train_dataset + val_dataset + test_dataset:
