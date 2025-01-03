@@ -66,6 +66,7 @@ def get_model(model_type: str, dataset_name: str):
     elif model_type == "vgg16":
         return torchvision.models.vgg16(pretrained=False)
     elif model_type == "resnet18":
+        print("load resnet18")
         return ResNet18(in_channels=in_shape, num_classes=num_classes)
     else:
         raise NotImplementedError(f"{model_type} is not implemented")

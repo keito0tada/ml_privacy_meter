@@ -21,6 +21,7 @@ from trainers.fast_train import get_batches, load_cifar10_data
 import medmnist
 from medmnist import INFO, Evaluator
 
+
 class InfinitelyIndexableDataset(Dataset):
     """
     A PyTorch Dataset that is able to index the given dataset infinitely.
@@ -178,7 +179,7 @@ def get_dataset(dataset_name: str, data_dir: str, logger: Any, **kwargs: Any) ->
                 except subprocess.CalledProcessError as e:
                     logger.error(f"Error during download or extraction: {e}")
                     raise RuntimeError("Failed to download or extract the dataset.")
-                
+
             X = (
                 pd.read_csv(
                     f"{data_dir}/dataset_texas/feats", header=None, encoding="utf-8"
@@ -215,13 +216,20 @@ def get_dataset(dataset_name: str, data_dir: str, logger: Any, **kwargs: Any) ->
             with open(f"{path}.pkl", "wb") as file:
                 pickle.dump(all_data, file)
             logger.info(f"Save data to {path}.pkl")
-        elif dataset_name == 'pathmnist':
+        elif dataset_name == "pathmnist":
+            print("load pathmnist")
             info = INFO[dataset_name]
-            DataClass = getattr(medmnist, info['python_class'])
+            DataClass = getattr(medmnist, info["python_class"])
             data_transform = transforms.Compose(
-            [transforms.ToTensor(),
-            transforms.Normalize(mean=[.5], std=[.5])])
-            train_dataset = DataClass(split='train', transform=data_transform, download=True, as_rgb=False, size=28)
+                [transforms.ToTensor(), transforms.Normalize(mean=[0.5], std=[0.5])]
+            )
+            train_dataset = DataClass(
+                split="train",
+                transform=data_transform,
+                download=True,
+                as_rgb=False,
+                size=28,
+            )
             # val_dataset = DataClass(split='val', transform=data_transform, download=True, as_rgb=False, size=28)
             # test_dataset = DataClass(split='test', transform=data_transform, download=True, as_rgb=False, size=28)
             train_data_x = []
