@@ -229,23 +229,24 @@ def get_dataset(dataset_name: str, data_dir: str, logger: Any, **kwargs: Any) ->
                 as_rgb=False,
                 size=28,
             )
-            val_dataset = DataClass(
-                split="val",
-                transform=data_transform,
-                download=True,
-                as_rgb=False,
-                size=28,
-            )
-            test_dataset = DataClass(
-                split="test",
-                transform=data_transform,
-                download=True,
-                as_rgb=False,
-                size=28,
-            )
+            # val_dataset = DataClass(
+            #     split="val",
+            #     transform=data_transform,
+            #     download=True,
+            #     as_rgb=False,
+            #     size=28,
+            # )
+            # test_dataset = DataClass(
+            #     split="test",
+            #     transform=data_transform,
+            #     download=True,
+            #     as_rgb=False,
+            #     size=28,
+            # )
             train_data_x = []
             train_data_y = []
-            for X, y in train_dataset + val_dataset + test_dataset:
+            # for X, y in train_dataset + val_dataset + test_dataset:
+            for X, y in train_dataset:
                 train_data_x.append(X)
                 train_data_y.append(y[0])
 
